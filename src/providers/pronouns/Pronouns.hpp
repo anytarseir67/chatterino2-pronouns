@@ -17,11 +17,10 @@ public:
         const QString &username,
         const std::function<void(UserPronouns)> &callbackSuccess,
         const std::function<void()> &callbackFail);
-
-private:
     // Retrieve cached pronouns for user.
     std::optional<UserPronouns> getCachedUserPronoun(const QString &username);
 
+private:
     // mutex for editing the saved map.
     std::shared_mutex mutex;
     // Login name -> Pronouns
