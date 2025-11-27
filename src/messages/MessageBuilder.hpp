@@ -304,7 +304,7 @@ private:
                                    const MessageParseArgs &args);
 
     void appendChannelName(const Channel *channel);
-    void appendPronoun(const QVariantMap &tags);
+    void appendPronoun();
     void appendUsername(const QVariantMap &tags, const MessageParseArgs &args);
 
     void addWords(const QStringList &words,

@@ -1625,7 +1625,7 @@ std::pair<MessagePtrMut, HighlightAlert> MessageBuilder::makeIrcMessage(
 
     if (getSettings()->showPronounsInChat)
     {
-        builder.appendPronoun(tags);
+        builder.appendPronoun();
     }
 
     builder.appendUsername(tags, args);
@@ -2140,7 +2140,7 @@ void MessageBuilder::appendChannelName(const Channel *channel)
         ->setLink(link);
 }
 
-void MessageBuilder::appendPronoun(const QVariantMap &tags)
+void MessageBuilder::appendPronoun()
 {
     QString username = this->message_->loginName;
 
