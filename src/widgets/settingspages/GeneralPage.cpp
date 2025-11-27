@@ -1289,6 +1289,7 @@ void GeneralPage::initLayout(GeneralPageView &layout)
                             s.showPronounsInChat)
         ->setDescription(
             R"(Pronouns are retrieved from <a href="https://pr.alejo.io">pr.alejo.io</a> when a users first message is sent.)")
+        ->addTo(layout);
     
     SettingWidget::checkbox("Show stream title in live message",
                             s.showTitleInLiveMessage)
