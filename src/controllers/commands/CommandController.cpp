@@ -19,6 +19,7 @@
 #include "controllers/commands/builtin/twitch/DeleteMessages.hpp"
 #include "controllers/commands/builtin/twitch/GetModerators.hpp"
 #include "controllers/commands/builtin/twitch/GetVIPs.hpp"
+#include "controllers/commands/builtin/twitch/LowTrust.hpp"
 #include "controllers/commands/builtin/twitch/Poll.hpp"
 #include "controllers/commands/builtin/twitch/Prediction.hpp"
 #include "controllers/commands/builtin/twitch/Raid.hpp"
@@ -451,6 +452,11 @@ CommandController::CommandController(const Paths &paths)
 
     this->registerCommand("/warn", &commands::sendWarn);
 
+    this->registerCommand("/monitor", &commands::monitorUser);
+    this->registerCommand("/restrict", &commands::restrictUser);
+    this->registerCommand("/unmonitor", &commands::unmonitorUser);
+    this->registerCommand("/unrestrict", &commands::unrestrictUser);
+
     for (const auto &cmd : TWITCH_WHISPER_COMMANDS)
     {
         this->registerCommand(cmd, &commands::sendWhisper);
@@ -481,6 +487,11 @@ CommandController::CommandController(const Paths &paths)
     this->registerCommand("/debug-eventsub", &commands::eventsub);
 
     this->registerCommand("/debug-test", &commands::debugTest);
+
+#ifdef Q_OS_WIN
+    this->registerCommand("/debug-relaunch-with-console",
+                          &commands::relaunchWithConsole);
+#endif
 
     this->registerCommand("/shield", &commands::shieldModeOn);
     this->registerCommand("/shieldoff", &commands::shieldModeOff);
