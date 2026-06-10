@@ -99,6 +99,16 @@ ScrollbarHighlight Message::getScrollBarHighlight() const
         };
     }
 
+    if (this->flags.has(MessageFlag::Announcement) &&
+        getSettings()->enableAnnouncementHighlight)
+    {
+        return {
+            ColorProvider::instance().color(colorTypeFromHelixAnnouncementColor(
+                this->announcementColor,
+                getSettings()->enableColoredAnnouncementHighlight)),
+        };
+    }
+
     return {};
 }
 
@@ -156,6 +166,17 @@ QJsonObject Message::toJson() const
     if (this->reward)
     {
         msg["reward"_L1] = this->reward->toJson();
+    }
+
+    if (this->bits > 0)
+    {
+        msg["bits"_L1] = static_cast<qint64>(this->bits);
+    }
+
+    if (this->flags.has(MessageFlag::Announcement))
+    {
+        msg["announcementColor"_L1] =
+            qmagicenum::enumNameString(this->announcementColor);
     }
 
     // XXX: figure out if we can add this in tests
