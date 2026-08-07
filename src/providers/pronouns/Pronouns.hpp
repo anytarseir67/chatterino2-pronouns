@@ -22,10 +22,10 @@ public:
         const std::function<void(UserPronouns)> &callbackSuccess,
         const std::function<void()> &callbackFail);
 
+        // Retrieve cached pronouns for user.
+        std::optional<UserPronouns> getCachedUserPronoun(const QString &username);
+        
 private:
-    // Retrieve cached pronouns for user.
-    std::optional<UserPronouns> getCachedUserPronoun(const QString &username);
-
     // mutex for editing the saved map.
     std::shared_mutex mutex;
     // Login name -> Pronouns

@@ -314,6 +314,7 @@ private:
                                    const MessageParseArgs &args);
 
     void appendChannelName(const Channel *channel);
+    void appendPronoun();
     void appendUsername(Communi::TagsRef tags, const MessageParseArgs &args);
 
     void addWords(const QStringList &words,

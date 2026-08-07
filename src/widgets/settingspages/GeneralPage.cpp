@@ -1429,6 +1429,11 @@ void GeneralPage::initLayout(GeneralPageView &layout)
             R"(Pronouns are retrieved from <a href="https://pr.alejo.io">pr.alejo.io</a> when a user card is opened.)")
         ->addTo(layout);
 
+    SettingWidget::checkbox("Show user's pronouns in the chatbox", s.showPronounsInChat)
+        ->setDescription(
+            R"(Pronouns are retrieved from <a href="https://pr.alejo.io">pr.alejo.io</a> when a users first message is sent.)")
+        ->addTo(layout);
+
     SettingWidget::checkbox("Show stream title in live message",
                             s.showTitleInLiveMessage)
         ->setTooltip("The title in the message will be the title the streamer "

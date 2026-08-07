@@ -29,6 +29,7 @@
 #include "providers/ffz/FfzBadges.hpp"
 #include "providers/ffz/FfzEmotes.hpp"
 #include "providers/links/LinkResolver.hpp"
+#include "providers/pronouns/Pronouns.hpp"
 #include "providers/seventv/SeventvBadges.hpp"
 #include "providers/seventv/SeventvEmotes.hpp"
 #include "providers/twitch/api/Helix.hpp"
@@ -1775,6 +1776,11 @@ std::pair<MessagePtrMut, HighlightAlert> MessageBuilder::makeIrcMessage(
     builder.appendBttvBadges(userID);
     builder.appendSeventvBadges(userID);
 
+    if (getSettings()->showPronounsInChat)
+    {
+        builder.appendPronoun();
+    }
+
     builder.appendUsername(tags, args);
 
     TextState textState{.twitchChannel = twitchChannel};
@@ -2319,6 +2325,36 @@ void MessageBuilder::appendChannelName(const Channel *channel)
     this->emplace<TextElement>(channelName, MessageElementFlag::ChannelName,
                                MessageColor::System)
         ->setLink(link);
+}
+
+void MessageBuilder::appendPronoun()
+{
+    QString username = this->message_->loginName;
+
+    //i could NOT get this to work pulling the value out of just getUserPronoun, so we get this weird thing
+    auto cacheduserPronoun =
+        getApp()->getPronouns()->getCachedUserPronoun(username);
+
+    // just to populate the cache :3
+    if (!cacheduserPronoun.has_value())
+    {
+        getApp()->getPronouns()->getUserPronoun(
+            username, [this](const auto userPronoun) {}, [this]() {});
+        return;
+    }
+
+    auto userPronoun = cacheduserPronoun.value();
+
+    if (userPronoun.isUnspecified())
+    {
+        return;
+    }
+    auto pronounToDisplay = userPronoun.format();
+
+    this->emplace<TextElement>(pronounToDisplay, MessageElementFlag::Text,
+                               MessageColor::Text, FontStyle::ChatMediumItalic)
+        // link to set pronouns
+        ->setLink({Link::Url, "https://pronouns.alejo.io/"});
 }
 
 void MessageBuilder::appendUsername(Communi::TagsRef tags,
